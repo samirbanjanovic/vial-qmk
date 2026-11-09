@@ -7,13 +7,14 @@ static uint16_t session_word_count = 0;
 
 enum custom_keycodes {
     RAINBOW_RAIN = QK_KB_0,
+    RAINBOW_POOLS,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == RAINBOW_RAIN) {
+    if (keycode == RAINBOW_RAIN || keycode == RAINBOW_POOLS) {
         if (record->event.pressed) {
             rgb_matrix_enable();
-            rgb_matrix_mode(RGB_MATRIX_CUSTOM_RAINBOW_RAIN);
+            rgb_matrix_mode(keycode == RAINBOW_RAIN ? RGB_MATRIX_CUSTOM_RAINBOW_RAIN : RGB_MATRIX_CUSTOM_RAINBOW_POOLS);
         }
         return false;
     }

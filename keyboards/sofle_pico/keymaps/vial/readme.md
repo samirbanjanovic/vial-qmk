@@ -31,3 +31,21 @@ while Rainbow Rain runs. Use the custom key to select it, and select any built-i
 effect in the lighting dropdown to switch back. Changing lighting settings in
 Vial may also switch effects; use the RGB brightness and speed keycodes to adjust
 Rainbow Rain without leaving it.
+
+## Rainbow Pools
+
+Rainbow Pools is a non-reactive underglow effect for the acrylic case: random
+rainbow-colored pools softly bloom and fade beneath each half, blending where
+they overlap. It uses LED positions rather than key rows or key presses, with
+three independent pools per half. The appearance follows the LED coordinates
+configured for the keyboard.
+
+Assign **Rainbow Pools** from Vial's **User** tab after flashing both halves and
+reconnecting. Pressing the key enables RGB and saves the selected effect, just
+like Rainbow Rain. Existing bindings and effects are unchanged, and the OLED
+shows `RAINBOW POOLS`.
+
+Use the RGB brightness keycodes to set glow intensity and animation speed
+keycodes to adjust how quickly pools appear and fade. Colors are drawn from the
+full rainbow at full saturation. The same Vial lighting-dropdown limitations
+described above apply.

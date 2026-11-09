@@ -8,6 +8,11 @@
       "name": "Rainbow Rain",
       "title": "Activate falling rainbow rain with fading trails",
       "shortName": "Rain\nbow\nRain"
+    },
+    {
+      "name": "Rainbow Pools",
+      "title": "Activate soft rainbow pools that bloom and fade beneath the case",
+      "shortName": "Rain\nbow\nPools"
     }
   ],
   "matrix": {
