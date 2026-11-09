@@ -60,6 +60,42 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_90;
 }
 
+#ifdef RGB_MATRIX_ENABLE
+static const char *rgb_matrix_mode_name(void) {
+    switch (rgb_matrix_get_mode()) {
+#define RGB_MATRIX_EFFECT(name, ...) case RGB_MATRIX_##name: return PSTR(#name);
+#include "rgb_matrix_effects.inc"
+#undef RGB_MATRIX_EFFECT
+        default: return PSTR("UNKNOWN");
+    }
+}
+
+static void render_rgb_mode(void) {
+    const char *name = rgb_matrix_is_enabled() ? rgb_matrix_mode_name() : PSTR("OFF");
+    char text[31] = "RGB: ";
+    uint8_t index = 5;
+
+    while (index < sizeof(text) - 1) {
+        char c = pgm_read_byte(name++);
+        if (c == '\0') {
+            break;
+        }
+        text[index++] = c == '_' ? ' ' : c;
+    }
+    while (index < sizeof(text) - 1) {
+        text[index++] = ' ';
+    }
+    text[index] = '\0';
+
+    for (uint8_t row = 0; row < 3; row++) {
+        oled_set_cursor(0, 9 + row);
+        for (uint8_t column = 0; column < 10; column++) {
+            oled_write_char(text[row * 10 + column], false);
+        }
+    }
+}
+#endif
+
 // Master Display: Spanning rows 0 through 14
 static void render_master_display(void) {
     // Row 0: Top Header
@@ -100,12 +136,8 @@ static void render_master_display(void) {
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.caps_lock ? PSTR("CAPS: [ON]") : PSTR("CAPS:  OFF"), false);
 
-    // Row 7: Blank Spacer
+    // Row 7: Live Speed
     oled_set_cursor(0, 7);
-    oled_write_P(PSTR("          "), false);
-
-    // Row 8: Live Speed
-    oled_set_cursor(0, 8);
     #ifdef WPM_ENABLE
     char wpm_buf[16];
     snprintf(wpm_buf, sizeof(wpm_buf), "WPM:   %03d", get_current_wpm());
@@ -114,19 +146,15 @@ static void render_master_display(void) {
     oled_write_P(PSTR("WPM:   ---"), false);
     #endif
 
-    // Row 9: Blank Spacer
-    oled_set_cursor(0, 9);
-    oled_write_P(PSTR("          "), false);
-
-    // Row 10: Session Word Count
-    oled_set_cursor(0, 10);
+    // Row 8: Session Word Count
+    oled_set_cursor(0, 8);
     char word_buf[16];
     snprintf(word_buf, sizeof(word_buf), "WORDS:%04d", session_word_count);
     oled_write(word_buf, false);
 
-    // Row 11: Blank Spacer
-    oled_set_cursor(0, 11);
-    oled_write_P(PSTR("          "), false);
+    #ifdef RGB_MATRIX_ENABLE
+    render_rgb_mode();
+    #endif
 
     // Row 12: Dynamic Hardware Handedness
     oled_set_cursor(0, 12);
