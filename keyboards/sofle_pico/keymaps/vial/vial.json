@@ -3,6 +3,13 @@
   "vendorId": "0x4A54",
   "productId": "0x5350",
   "keycodes": ["qmk_lighting"],
+  "customKeycodes": [
+    {
+      "name": "Rainbow Rain",
+      "title": "Activate falling rainbow rain with fading trails",
+      "shortName": "Rain\nbow\nRain"
+    }
+  ],
   "matrix": {
     "rows": 10,
     "cols": 6

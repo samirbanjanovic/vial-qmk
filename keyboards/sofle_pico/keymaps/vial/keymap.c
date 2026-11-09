@@ -5,7 +5,18 @@
 
 static uint16_t session_word_count = 0;
 
+enum custom_keycodes {
+    RAINBOW_RAIN = QK_KB_0,
+};
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == RAINBOW_RAIN) {
+        if (record->event.pressed) {
+            rgb_matrix_enable();
+            rgb_matrix_mode(RGB_MATRIX_CUSTOM_RAINBOW_RAIN);
+        }
+        return false;
+    }
     if (record->event.pressed) {
         if (keycode == KC_SPC || keycode == KC_ENT) {
             session_word_count++;
@@ -65,6 +76,9 @@ static const char *rgb_matrix_mode_name(void) {
     switch (rgb_matrix_get_mode()) {
 #define RGB_MATRIX_EFFECT(name, ...) case RGB_MATRIX_##name: return PSTR(#name);
 #include "rgb_matrix_effects.inc"
+#undef RGB_MATRIX_EFFECT
+#define RGB_MATRIX_EFFECT(name, ...) case RGB_MATRIX_CUSTOM_##name: return PSTR(#name);
+#include "rgb_matrix_user.inc"
 #undef RGB_MATRIX_EFFECT
         default: return PSTR("UNKNOWN");
     }
