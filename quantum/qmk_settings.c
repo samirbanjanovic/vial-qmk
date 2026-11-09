@@ -220,6 +220,9 @@ void qmk_settings_reset(void) {
     /* must call clear_keyboard for the NKRO setting to not cause stuck keys */
     clear_keyboard();
     keymap_config.raw = 0;
+#ifdef NKRO_DEFAULT_ON
+    keymap_config.nkro = NKRO_DEFAULT_ON;
+#endif
     keymap_config.oneshot_enable = 1;
     eeconfig_update_keymap(&keymap_config);
 
